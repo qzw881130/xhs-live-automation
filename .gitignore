@@ -12,7 +12,6 @@ venv/
 .idea/
 
 # Temp
-*.txt
 *.log
 
 # OS
