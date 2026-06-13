@@ -10,3 +10,5 @@ DEBUG = True
 
 # 发送失败重试次数
 MAX_RETRY = 3
+
+DEBUG = False

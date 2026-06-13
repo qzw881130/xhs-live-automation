@@ -3,22 +3,41 @@ import pyperclip
 import uiautomation as auto
 import win32gui
 
+from config import DEBUG
 
 WINDOW_NAME = "直播助手-直播页"
+
+
+def log(*args):
+    if DEBUG:
+        print(*args)
 
 
 def find_window():
     root = auto.GetRootControl()
 
+    if DEBUG:
+        print("=" * 60)
+        print("开始查找直播助手窗口...")
+
     for win in root.GetChildren():
         try:
             name = win.Name or ""
             class_name = win.ClassName or ""
+            rect = win.BoundingRectangle
+
+            log(
+                f"Name='{name}' | "
+                f"Class='{class_name}' | "
+                f"Rect=({rect.left},{rect.top},{rect.right},{rect.bottom})"
+            )
 
             if "直播助手" in name and class_name == "Chrome_WidgetWin_1":
+                log("✅ 命中直播助手窗口")
                 return win
-        except Exception:
-            pass
+
+        except Exception as e:
+            log("异常:", e)
 
     return None
 
@@ -26,11 +45,10 @@ def find_window():
 def is_foreground_xhs() -> bool:
     hwnd = win32gui.GetForegroundWindow()
     title = win32gui.GetWindowText(hwnd)
-    class_name = win32gui.GetClassName(hwnd)
 
-    print(f"当前前台窗口: {title} | {class_name}")
+    log(f"当前前台窗口: {title}")
 
-    return "直播助手" in title or class_name == "Chrome_WidgetWin_1" and "直播助手" in title
+    return "直播助手" in title
 
 
 def send_comment(text: str) -> bool:
@@ -52,11 +70,11 @@ def send_comment(text: str) -> bool:
     send_x = rect.right - 75
     send_y = rect.bottom - 77
 
-    print("=" * 50)
-    print("窗口:", rect.left, rect.top, rect.right, rect.bottom)
-    print("输入框:", comment_x, comment_y)
-    print("发送:", send_x, send_y)
-    print("=" * 50)
+    log("=" * 50)
+    log("窗口:", rect.left, rect.top, rect.right, rect.bottom)
+    log("输入框:", comment_x, comment_y)
+    log("发送:", send_x, send_y)
+    log("=" * 50)
 
     pyperclip.copy(text)
     time.sleep(0.2)
