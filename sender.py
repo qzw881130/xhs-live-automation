@@ -58,9 +58,9 @@ def send_comment(text: str) -> bool:
         print("[跳过] 当前屏幕没有直播助手窗口")
         return False
 
-    if not is_foreground_xhs():
-        print("[跳过] 直播助手不是前台窗口，不发送")
-        return False
+#    if not is_foreground_xhs():
+#        print("[跳过] 直播助手不是前台窗口，不发送")
+#        return False
 
     rect = win.BoundingRectangle
 
