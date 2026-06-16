@@ -2,10 +2,11 @@ import random
 import time
 import ctypes
 import sys
+import argparse
 
 from holo import generate_comment
 from sender import send_comment
-from config import SEND_INTERVAL_MIN, SEND_INTERVAL_MAX
+from config import PLATFORMS, SEND_INTERVAL_MIN, SEND_INTERVAL_MAX
 
 
 def disable_quick_edit():
@@ -31,11 +32,26 @@ def countdown(seconds):
     sys.stdout.flush()
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="自动发送直播评论")
+    parser.add_argument(
+        "-p",
+        "--platform",
+        choices=PLATFORMS.keys(),
+        default="xhs",
+        help="平台：xhs=小红书，dy=抖音",
+    )
+    return parser.parse_args()
+
+
 disable_quick_edit()
+args = parse_args()
+platform_name = PLATFORMS[args.platform]["name"]
+print(f"当前平台：{platform_name} ({args.platform})")
 
 while True:
     comment = generate_comment()
-    ok = send_comment(comment)
+    ok = send_comment(comment, args.platform)
 
     wait = random.randint(SEND_INTERVAL_MIN, SEND_INTERVAL_MAX)
 

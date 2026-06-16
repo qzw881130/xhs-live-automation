@@ -2,6 +2,6 @@
 
 call F:\ai_agents\venv\Scripts\activate.bat
 
-python app.py
+python app.py -p xhs
 
 pause
