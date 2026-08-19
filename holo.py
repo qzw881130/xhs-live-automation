@@ -1,16 +1,8 @@
 import random
 
-WELCOME = [
-    "欢迎来到直播间，祝您阅读愉快～",
-    "欢迎新朋友来到直播间～",
-    "喜欢有声小说的朋友欢迎一起听书～",
-    "点点赞、点点关注，支持一下主播呀～",
-    "感谢来到直播间，一起品读经典～",
-    "点点赞点点关注支持一下主播呀～",
-    "欢迎各位听友进直播间，共品有声小说",
-    "点关注不迷路~ 下次开播有通知！随时下播，随时开播"
-]
+from config import PLATFORMS
 
 
-def generate_comment():
-    return random.choice(WELCOME)
+def generate_comment(platform: str = "xhs"):
+    comments = PLATFORMS[platform]["comments"]
+    return random.choice(comments)

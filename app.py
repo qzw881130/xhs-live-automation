@@ -6,7 +6,7 @@ import argparse
 
 from holo import generate_comment
 from sender import send_comment
-from config import PLATFORMS, SEND_INTERVAL_MIN, SEND_INTERVAL_MAX
+from config import PLATFORMS
 
 
 def disable_quick_edit():
@@ -39,21 +39,23 @@ def parse_args():
         "--platform",
         choices=PLATFORMS.keys(),
         default="xhs",
-        help="平台：xhs=小红书，dy=抖音",
+        help="平台：xhs=小红书，dy=抖音，bili=哔哩哔哩",
     )
     return parser.parse_args()
 
 
 disable_quick_edit()
 args = parse_args()
-platform_name = PLATFORMS[args.platform]["name"]
+platform_config = PLATFORMS[args.platform]
+platform_name = platform_config["name"]
 print(f"当前平台：{platform_name} ({args.platform})")
 
 while True:
-    comment = generate_comment()
+    comment = generate_comment(args.platform)
     ok = send_comment(comment, args.platform)
 
-    wait = random.randint(SEND_INTERVAL_MIN, SEND_INTERVAL_MAX)
+    send_interval = platform_config["send_interval"]
+    wait = random.randint(send_interval["min"], send_interval["max"])
 
     if ok:
         print(f"已发送，{wait} 秒后再次检查")

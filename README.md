@@ -59,16 +59,7 @@ pip install uiautomation pyperclip openai pywin32
 
 ## 配置
 
-修改 `config.py`：
-
-```python
-SEND_INTERVAL_MIN = 900
-SEND_INTERVAL_MAX = 1200
-```
-
-单位是秒。
-
-平台配置在 `PLATFORMS` 中：
+平台配置在 `config.py` 的 `PLATFORMS` 中。发送间隔单位是秒，每个平台单独配置：
 
 ```python
 PLATFORMS = {
@@ -76,6 +67,7 @@ PLATFORMS = {
         "name": "小红书",
         "window_keywords": ["直播助手"],
         "window_class": "Chrome_WidgetWin_1",
+        "send_interval": {"min": 900, "max": 1200},
         "comment_box": {"right_offset": 487, "bottom_offset": 88},
         "send_button": {"right_offset": 75, "bottom_offset": 77},
     },
@@ -83,8 +75,17 @@ PLATFORMS = {
         "name": "抖音",
         "window_keywords": ["直播伴侣"],
         "window_class": None,
+        "send_interval": {"min": 60, "max": 120},
         "comment_box": {"right_offset": 409, "bottom_offset": 98},
         "send_button": {"right_offset": 97, "bottom_offset": 81},
+    },
+    "bili": {
+        "name": "哔哩哔哩",
+        "window_keywords": ["直播姬"],
+        "window_class": None,
+        "send_interval": {"min": 120, "max": 240},
+        "comment_box": {"right_offset": 502, "bottom_offset": 96},
+        "send_button": {"right_offset": 97, "bottom_offset": 94},
     },
 }
 ```
@@ -103,6 +104,12 @@ python app.py -p xhs
 
 ```bash
 python app.py -p dy
+```
+
+哔哩哔哩：
+
+```bash
+python app.py -p bili
 ```
 
 如果不传 `-p`，默认使用小红书：
@@ -136,6 +143,12 @@ python check_mouse_position.py -p xhs
 
 ```bash
 python check_mouse_position.py -p dy
+```
+
+启动哔哩哔哩坐标检查：
+
+```bash
+python check_mouse_position.py -p bili
 ```
 
 运行后按提示操作：
